@@ -56,32 +56,27 @@ class JokeFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // Créez et insérez l'utilisateur admin
         if (!$this->hasReference('user_admin')) {
             $userAdmin = new User();
             $userAdmin->setUsername('admin');
-            // configurez les autres propriétés de l'utilisateur admin
             $hashedPassword = $this->passwordHasher->hashPassword(
                 $userAdmin,
-                'adminpassword' // Remplacez par le mot de passe réel de l'utilisateur admin
+                'adminpassword'
             );
             $userAdmin->setPassword($hashedPassword);
             $manager->persist($userAdmin);
             $this->setReference('user_admin', $userAdmin);
         }
 
-        // Créez et insérez les blagues
         foreach (self::JOKES as $jokeData) {
             $joke = new Joke();
             $joke->setContent($jokeData['name']);
             $categoryReference = $jokeData['reference'];
             $category = $this->getReference($categoryReference);
             $joke->setCategory($category);
-            
-            $userReference = 'user_admin'; // Utilisez la référence correcte de l'utilisateur (admin ou user)
+            $userReference = 'user_admin';
             $user = $this->getReference($userReference);
             $joke->setUser($user);
-            
             $manager->persist($joke);
         }
 

@@ -18,26 +18,33 @@ class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $existingAdmin = $manager->getRepository(User::class)->findOneBy(['username' => 'admin']);
+        $isAdmin = $manager->getRepository(User::class)->findOneBy(['username' => 'admin']);
+        $isSimpleUser = $manager->getRepository(User::class)->findOneBy(['username' => 'user']);
 
-        if (!$existingAdmin) {
-            // Créez l'utilisateur 'admin' uniquement s'il n'existe pas déjà
-            $userAdmin = new User();
-            $userAdmin->setUsername('admin');
-
-            // Hashage du mot de passe 'adminpassword'
+        if (!$isAdmin) {
+            $admin = new User();
+            $admin->setUsername('admin');
+            $admin->setRoles(['ROLE_ADMIN']);
             $hashedPassword = $this->passwordHasher->hashPassword(
-                $userAdmin,
+                $admin,
                 'adminpassword'
             );
-            $userAdmin->setPassword($hashedPassword);
-
-            // configurez les autres propriétés de l'utilisateur admin
-            $manager->persist($userAdmin);
-            $this->addReference('user_admin', $userAdmin);
+            $admin->setPassword($hashedPassword);
+            $manager->persist($admin);
+            $this->addReference('user_admin', $admin);
         }
 
-        // ... Créez d'autres utilisateurs et persistez-les avec leurs mots de passe hashés ...
+        if (!$isSimpleUser) {
+            $user = new User();
+            $user->setUsername('user');
+            $hashedPassword = $this->passwordHasher->hashPassword(
+                $user,
+                'userpassword'
+            );
+            $user->setPassword($hashedPassword);
+            $manager->persist($user);
+            $this->addReference('user_user', $user);
+        }
 
         $manager->flush();
     }
