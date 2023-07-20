@@ -3,14 +3,29 @@
 namespace App\DataFixtures;
 
 use App\Entity\Joke;
+use App\Entity\User;
+use App\Entity\Category;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class JokeFixtures extends Fixture
 {
+    private UserPasswordHasherInterface $passwordHasher;
+
+    public function __construct(UserPasswordHasherInterface $passwordHasher)
+    {
+        $this->passwordHasher = $passwordHasher;
+    }
+    
     public const CATEGORIES = [
         'category_belges',
         'category_blondes',
+    ];
+
+    public const USERS = [
+        'admin',
+        'user',
     ];
 
     public const JOKES = [
@@ -41,12 +56,32 @@ class JokeFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        foreach (self::JOKES as $content) {
+        // Créez et insérez l'utilisateur admin
+        if (!$this->hasReference('user_admin')) {
+            $userAdmin = new User();
+            $userAdmin->setUsername('admin');
+            // configurez les autres propriétés de l'utilisateur admin
+            $hashedPassword = $this->passwordHasher->hashPassword(
+                $userAdmin,
+                'adminpassword' // Remplacez par le mot de passe réel de l'utilisateur admin
+            );
+            $userAdmin->setPassword($hashedPassword);
+            $manager->persist($userAdmin);
+            $this->setReference('user_admin', $userAdmin);
+        }
+
+        // Créez et insérez les blagues
+        foreach (self::JOKES as $jokeData) {
             $joke = new Joke();
-            $joke->setContent($content['name']);
-            $categoryReference = $content['reference'];
+            $joke->setContent($jokeData['name']);
+            $categoryReference = $jokeData['reference'];
             $category = $this->getReference($categoryReference);
             $joke->setCategory($category);
+            
+            $userReference = 'user_admin'; // Utilisez la référence correcte de l'utilisateur (admin ou user)
+            $user = $this->getReference($userReference);
+            $joke->setUser($user);
+            
             $manager->persist($joke);
         }
 
