@@ -22,9 +22,11 @@
       </ul>
       <span class="navbar-text">
         {% if app.user %}
-            <span class="my-auto me-3 text-white text-decoration-none">Bonjour {{ app.user.username }}</span>
+            <span class="my-auto me-3 text-black text-decoration-none">Bonjour {{ app.user.username }}</span>
+        {% else %}
+            <a class="bg-primary p-3 rounded my-auto me-3 text-decoration-none text-white letter-spacing" href="{{ path('app_login') }}">Connexion</a>
+            <a class="bg-primary p-3 rounded my-auto me-3 text-decoration-none text-white letter-spacing" href="{{ path('app_register') }}">Inscription</a>
         {% endif %}
-        {% include './security/login.html.twig' %}
       </span>
     </div>
   </div>

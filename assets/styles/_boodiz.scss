@@ -6,6 +6,7 @@
 
 body {
     background: url('../images/bg.png') repeat;
+    letter-spacing: 2px;
 }
 
 .container {
@@ -17,8 +18,4 @@ body {
 nav {
     --bs-navbar-color: $primary;
     border: none;
-}
-
-.letter-spacing {
-    letter-spacing: 2px;
 }
