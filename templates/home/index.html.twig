@@ -3,5 +3,17 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <h1 class="mt-4">Bienvenue sur Boodiz, le site de blagues en ligne</h1>
+    {% for joke in jokes %}
+        <div class="card mt-4">
+            <div class="card-body">
+                <p class="card-text">#{{ joke.id }} - {{ joke.content|raw }}</p>
+            </div>
+        </div>
+        <div class="card border-0">
+            <div class="card-body">
+                <p class="card-text">Créée par test</p>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}
