@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background: url('../images/bg.png') repeat;
+}
+
+.container {
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    box-shadow: 5px 5px 30px #E0E0E0;
+}
+
+nav {
+    --bs-navbar-color: $primary;
+    border: none;
+}
+
+.letter-spacing {
+    letter-spacing: 2px;
+}
