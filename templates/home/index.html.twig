@@ -10,10 +10,12 @@
                 <p class="card-text">#{{ joke.id }} - {{ joke.content|raw }}</p>
             </div>
         </div>
-        <div class="card border-0">
-            <div class="card-body">
-                <p class="card-text">Créée par test</p>
+        {% if joke.user %}
+            <div class="card border-0">
+                <div class="card-body">
+                    <p class="card-text">Auteur : {{ joke.user.username }}</p>
+                </div>
             </div>
-        </div>
+        {% endif %}
     {% endfor %}
 {% endblock %}
