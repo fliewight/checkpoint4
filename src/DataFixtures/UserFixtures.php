@@ -15,26 +15,36 @@ class UserFixtures extends Fixture
     {
         $this->passwordHasher = $passwordHasher;
     }
+
     public function load(ObjectManager $manager): void
     {
-        $admin = new User();
-        $admin->setUsername('admin');
-        $admin->setRoles(['ROLE_ADMIN']);
-        $hashedPassword = $this->passwordHasher->hashPassword(
-            $admin,
-            'testeur'
-        );
-        $admin->setPassword($hashedPassword);
-        $manager->persist($admin);
+        $isAdmin = $manager->getRepository(User::class)->findOneBy(['username' => 'admin']);
+        $isSimpleUser = $manager->getRepository(User::class)->findOneBy(['username' => 'user']);
 
-        $user = new User();
-        $user->setUsername('user');
-        $hashedPassword = $this->passwordHasher->hashPassword(
-            $user,
-            'testeur'
-        );
-        $user->setPassword($hashedPassword);
-        $manager->persist($user);
+        if (!$isAdmin) {
+            $admin = new User();
+            $admin->setUsername('admin');
+            $admin->setRoles(['ROLE_ADMIN']);
+            $hashedPassword = $this->passwordHasher->hashPassword(
+                $admin,
+                'adminpassword'
+            );
+            $admin->setPassword($hashedPassword);
+            $manager->persist($admin);
+            $this->addReference('user_admin', $admin);
+        }
+
+        if (!$isSimpleUser) {
+            $user = new User();
+            $user->setUsername('user');
+            $hashedPassword = $this->passwordHasher->hashPassword(
+                $user,
+                'userpassword'
+            );
+            $user->setPassword($hashedPassword);
+            $manager->persist($user);
+            $this->addReference('user_user', $user);
+        }
 
         $manager->flush();
     }
