@@ -41,7 +41,7 @@ class CategoryController extends AbstractController
         return $this->renderForm('admin_category/new.html.twig', [
             'category' => $category,
             'form' => $form,
-        ], null, '@admin_category');
+        ]);
     }
 
     #[Route('/{id}', name: 'category_show', methods: ['GET'])]
