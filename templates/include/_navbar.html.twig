@@ -23,6 +23,10 @@
       <span class="navbar-text">
         {% if app.user %}
             <span class="my-auto me-3 text-black text-decoration-none">Bonjour {{ app.user.username }}</span>
+            {% if is_granted('ROLE_ADMIN') %}
+              <a class="bg-primary p-3 rounded my-auto me-3 text-decoration-none text-white letter-spacing" href="#">Administration</a>
+            {% endif %}
+            <a class="bg-primary p-3 rounded my-auto me-3 text-decoration-none text-white letter-spacing" href="{{ path('app_logout') }}">Déconnexion</a>
         {% else %}
             <a class="bg-primary p-3 rounded my-auto me-3 text-decoration-none text-white letter-spacing" href="{{ path('app_login') }}">Connexion</a>
             <a class="bg-primary p-3 rounded my-auto me-3 text-decoration-none text-white letter-spacing" href="{{ path('app_register') }}">Inscription</a>

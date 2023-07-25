@@ -1,0 +1,3 @@
+{{ form_start(deleteForm, {'attr': {'onsubmit': 'return confirm("Êtes-vous sûr de vouloir supprimer cette catégorie ?");'}}) }}
+    {{ form_widget(deleteForm.delete) }}
+{{ form_end(deleteForm) }}
