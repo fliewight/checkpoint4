@@ -13,9 +13,9 @@
           <form action="">
             <select class="form-select" aria-label="Liste des catégories">
                 <option selected>Liste des catégories</option>
-                <option value="1">One</option>
-                <option value="2">Two</option>
-                <option value="3">Three</option>
+                {% for category in categories %}
+                  <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
             </select>
           </form>
         </li>
